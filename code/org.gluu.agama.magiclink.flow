@@ -1,0 +1,55 @@
+Flow org.gluu.agama.magiclink
+     Basepath ""
+     Timeout 360 seconds
+     Configs conf
+// Create and initialize variable to receive email input
+emailObj = {errorMessage: ""}
+// Iterate x times max
+Repeat 3 times max
+     // Retrieve user email address from UI
+     formDataInput = RRF "mailform.ftlh" emailObj
+     // Assign user email input to a variable
+     email = formDataInput.mail
+     // Create an instance of MagicLinkService with configurable parameters.
+     magicLinkService = Call org.gluu.agama.jans.MagicLinkService#getInstance conf.hostName conf.secretKey conf.tokenExpiration
+     // Get user details using magic link service
+     userData = Call magicLinkService getUserEntity email
+     // User data
+     Log "@info User data is : " 
+     When userData.empty is not true
+          // User found
+          Log "@info User found with e-mail % " email
+          // Call magic link service to send mail
+          token = Call magicLinkService sendMail email
+          //  Magic link has been sent
+          Log "@debug Mail has been sent with token %" token
+          // Empty object assign
+          obj = {}
+          // Fetching magic-link data
+          data = RRF "acknowledgement.ftlh" obj true
+          // Token was
+          Log "@info Token was : %" data.token
+          // Token verification 
+          isVerify = Call magicLinkService verifyMagicLink data.token
+          // Is Token verified 
+          When isVerify is true
+               // Token verification success
+               Log "@info Token verification successful"
+               // Flow finished successfully
+               Finish userData.uid
+          Otherwise
+               // Token verification failed 
+               Log "@info Token verification failed"
+               // Token verification failed
+               it_mymhg = {success:false, error: "Token verification failed"}
+               Finish it_mymhg
+     Otherwise
+          // User not found
+          Log "@info User not found with mail %" email
+          // Error message user not found
+          emailObj.errorMessage = "User Not found"
+// Max attempts Reached
+Log "@info Max attempts reached"
+// Flow finish with an error
+it_ikqan = {success:false, error: "Max attempts reached"}
+Finish it_ikqan
