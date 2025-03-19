@@ -100,7 +100,7 @@ i.e `agama_org.gluu.agama.magiclink`.
 
 ## Customize and Make It Your Own
 
-Fork this repo to start customizing the Agama-SMTP project. It is possible to 
+Fork this repo to start customizing the Agama-magiclink project. It is possible to 
 customize the user interface provided by the flow to suit your organization's 
 branding guidelines. Or customize the overall flow behavior. Follow the best 
 practices and steps listed [here](https://docs.jans.io/head/admin/developer/agama/agama-best-practices/#project-reuse-and-customizations)
