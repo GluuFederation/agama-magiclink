@@ -16,11 +16,15 @@
     "noDirectLaunch": [],
     "configs": {
         "org.gluu.agama.magiclink": {
-            "hostName": "mmrraju-patient-salmon.gluu.info",
-            "secretKey": "vfFYsdCNEreUsHKyl38b1wbIlf7PSxRm431ypSh6T3U=",
+            "hostName": "example.com",
+            "secretKey": "xxx...",
             "tokenExpiration": 10
         },
-        "": {}
+        "": {
+            "hostName": "example.com",
+            "secretKey": "xxxx...",
+            "tokenExpiration": 10
+        }
     },
     "name": "agama-magiclink"
 }

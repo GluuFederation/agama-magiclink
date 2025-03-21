@@ -14,8 +14,6 @@ Repeat 3 times max
      magicLinkService = Call org.gluu.agama.jans.MagicLinkService#getInstance conf.hostName conf.secretKey conf.tokenExpiration
      // Get user details using magic link service
      userData = Call magicLinkService getUserEntity email
-     // User data
-     Log "@info User data is : " 
      When userData.empty is not true
           // User found
           Log "@info User found with e-mail % " email
@@ -41,8 +39,8 @@ Repeat 3 times max
                // Token verification failed 
                Log "@info Token verification failed"
                // Token verification failed
-               it_mymhg = {success:false, error: "Token verification failed"}
-               Finish it_mymhg
+               it_bsvsz = {success:false, error: "Token verification failed"}
+               Finish it_bsvsz
      Otherwise
           // User not found
           Log "@info User not found with mail %" email
@@ -51,5 +49,5 @@ Repeat 3 times max
 // Max attempts Reached
 Log "@info Max attempts reached"
 // Flow finish with an error
-it_ikqan = {success:false, error: "Max attempts reached"}
-Finish it_ikqan
+it_jrytu = {success:false, error: "Max attempts reached"}
+Finish it_jrytu
