@@ -22,7 +22,7 @@
         },
         "": {
             "hostName": "example.com",
-            "secretKey": "xxxx",
+            "secretKey": "xxxx...",
             "tokenExpiration": 10
         }
     },
