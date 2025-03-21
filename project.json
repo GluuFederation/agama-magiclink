@@ -17,7 +17,7 @@
     "configs": {
         "org.gluu.agama.magiclink": {
             "hostName": "example.com",
-            "secretKey": "xxxx",
+            "secretKey": "xxx...",
             "tokenExpiration": 10
         },
         "": {
