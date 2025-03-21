@@ -20,7 +20,11 @@
             "secretKey": "xxxx",
             "tokenExpiration": 10
         },
-        "": {}
+        "": {
+            "hostName": "example.com",
+            "secretKey": "xxxx",
+            "tokenExpiration": 10
+        }
     },
     "name": "agama-magiclink"
 }
