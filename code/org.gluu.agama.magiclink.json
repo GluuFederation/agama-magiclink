@@ -19,7 +19,7 @@
 				"agamaData": {
 					"isTopLevelFlow": true,
 					"basepath": "",
-					"configParams": "{\n  \"hostName\": \"mmrraju-patient-salmon.gluu.info\",\n  \"secretKey\": \"vfFYsdCNEreUsHKyl38b1wbIlf7PSxRm431ypSh6T3U=\",\n  \"tokenExpiration\": 10\n}",
+					"configParams": "{\n  \"hostName\": \"example.com\",\n  \"secretKey\": \"xxxx\",\n  \"tokenExpiration\": 10\n}",
 					"nodeIcon": "material-symbols:line-start-square",
 					"timeout": "360",
 					"inputs": "",
@@ -35,7 +35,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false
+			"selected": true
 		},
 		{
 			"id": "assignmentNode-1b70c468-dbe3-4fa8-b30b-10a8f623e684",
@@ -1330,8 +1330,8 @@
 		}
 	],
 	"viewport": {
-		"x": -1460.4213360706426,
-		"y": -7.588109218234649,
+		"x": 246.5786639293574,
+		"y": 32.41189078176535,
 		"zoom": 1.1750784746716205
 	}
 }
