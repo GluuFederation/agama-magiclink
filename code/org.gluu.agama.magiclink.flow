@@ -39,8 +39,8 @@ Repeat 3 times max
                // Token verification failed 
                Log "@info Token verification failed"
                // Token verification failed
-               it_onhwz = {success:false, error: "Token verification failed"}
-               Finish it_onhwz
+               it_tfwec = {success:false, error: "Token verification failed"}
+               Finish it_tfwec
      Otherwise
           // User not found
           Log "@info User not found with mail %" email
@@ -49,5 +49,5 @@ Repeat 3 times max
 // Max attempts Reached
 Log "@info Max attempts reached"
 // Flow finish with an error
-it_cajdk = {success:false, error: "Max attempts reached"}
-Finish it_cajdk
+it_nkcte = {success:false, error: "Max attempts reached"}
+Finish it_nkcte
