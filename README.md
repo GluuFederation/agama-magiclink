@@ -22,7 +22,7 @@ the [Agama Framework](https://docs.jans.io/head/agama/introduction/) like
 
 Different IAM servers may provide different methods and 
 user interfaces from where an Agama project can be deployed on that server. 
-The steps below show how the Agama-SMTP project can be deployed on the 
+The steps below show how the Agama-Magiclink project can be deployed on the 
 [Janssen Server](https://jans.io). 
 
 Deployment of an Agama project involves three steps.
