@@ -19,7 +19,7 @@
 				"agamaData": {
 					"isTopLevelFlow": true,
 					"basepath": "",
-					"configParams": "{\n  \"hostName\": \"example.com\",\n  \"secretKey\": \"xxxx\",\n  \"tokenExpiration\": 10\n}",
+					"configParams": "{\n  \"hostName\": \"example.com\",\n  \"secretKey\": \"xxx...\",\n  \"tokenExpiration\": 10\n}",
 					"nodeIcon": "material-symbols:line-start-square",
 					"timeout": "360",
 					"inputs": "",
@@ -1330,8 +1330,8 @@
 		}
 	],
 	"viewport": {
-		"x": 246.5786639293574,
-		"y": 32.41189078176535,
-		"zoom": 1.1750784746716205
+		"x": 0,
+		"y": 0,
+		"zoom": 1
 	}
 }
