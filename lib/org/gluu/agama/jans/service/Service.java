@@ -123,24 +123,32 @@ public class Service extends MagicLinkService{
     public String sendMail(String to) throws Exception {
         SmtpConfiguration smtpConfiguration = getSmtpConfiguration();
 
-        String token = generateToken(to);
-        String magicLink = generateMagicLink(token);
+        boolean smtp = smtpConfiguration!=null;
 
-        String from = smtpConfiguration.getFromEmailAddress();
-        String subject = String.format(SUBJECT_TEMPLATE);
-        String textBody = String.format(MSG_TEMPLATE_TEXT, magicLink);
-        String htmlBody = EmailTemplate.get(magicLink);
-
-        MailService mailService = CdiUtil.bean(MailService.class);
-
-        if (mailService.sendMailSigned(from, from, to, null, subject, textBody, htmlBody)) {
-            LogUtils.log("E-mail has been delivered to % with code %", to, token);
-            return token;
-        }else{
-            throw new EntryNotFoundException("Email sending failed. Please re-try");
+        if(smtp){
+            String token = generateToken(to);
+            String magicLink = generateMagicLink(token);
+    
+            String from = smtpConfiguration.getFromEmailAddress();
+            String subject = String.format(SUBJECT_TEMPLATE);
+            String textBody = String.format(MSG_TEMPLATE_TEXT, magicLink);
+            String htmlBody = EmailTemplate.get(magicLink);
+    
+            MailService mailService = CdiUtil.bean(MailService.class);
+    
+            if (mailService.sendMailSigned(from, from, to, null, subject, textBody, htmlBody)) {
+                LogUtils.log("E-mail has been delivered to % with code %", to, token);
+                return token;
+            }else{
+                throw new EntryNotFoundException("Email sending failed. Please re-try");
+            }
+            LogUtils.log("E-mail delivery failed, check jans-auth logs");
+            return null; 
         }
-        LogUtils.log("E-mail delivery failed, check jans-auth logs");
-        return null;      
+
+        LogUtils.log("Configuration missing");
+
+     
     }
 
     private SmtpConfiguration getSmtpConfiguration() {
