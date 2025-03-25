@@ -28,7 +28,7 @@ Repeat 3 times max
           // Token was
           Log "@info Token was : %" data.token
           // Token verification 
-          isVerify = Call magicLinkService verifyMagicLink data.token
+          isVerify = Call magicLinkService verifyMagicLink data.ut
           // Is Token verified 
           When isVerify is true
                // Token verification success
@@ -39,8 +39,8 @@ Repeat 3 times max
                // Token verification failed 
                Log "@info Token verification failed"
                // Token verification failed
-               it_bsvsz = {success:false, error: "Token verification failed"}
-               Finish it_bsvsz
+               it_zidbi = {success:false, error: "Token verification failed"}
+               Finish it_zidbi
      Otherwise
           // User not found
           Log "@info User not found with mail %" email
@@ -49,5 +49,5 @@ Repeat 3 times max
 // Max attempts Reached
 Log "@info Max attempts reached"
 // Flow finish with an error
-it_jrytu = {success:false, error: "Max attempts reached"}
-Finish it_jrytu
+it_nqidd = {success:false, error: "Max attempts reached"}
+Finish it_nqidd
