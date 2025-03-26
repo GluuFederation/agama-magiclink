@@ -56,7 +56,8 @@ public class Service extends MagicLinkService{
     }
 
     public boolean verifyMagicLink(String token) {
-        token = token.substring(PREFIX.length());
+        LogUtils.log("Before: Token = %, PREFIX = %", token, PREFIX);
+        token = token.substring(PREFIX.length()).trim();
         LogUtils.log("UT after removing prefix : %", token);
 
         SignedJWT signedJWT = SignedJWT.parse(token);
