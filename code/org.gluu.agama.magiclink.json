@@ -329,7 +329,7 @@
 				},
 				"previousNodeId": "callNode-e9cd70d4-f96f-4e52-959d-89f27bdab5d2",
 				"agamaData": {
-					"logMessage": "\"Mail has been sent with token %\" token",
+					"logMessage": "\"Mail has been sent with token %\" ut",
 					"logLevel": "debug",
 					"nodeIcon": "octicon:log-16",
 					"nodeColor": "",
@@ -457,7 +457,7 @@
 					"displayName": "",
 					"hasComment": true,
 					"comment": "Call magic link service to send mail",
-					"asssignedVariableName": "token"
+					"asssignedVariableName": "ut"
 				}
 			},
 			"measured": {
@@ -554,7 +554,7 @@
 				},
 				"previousNodeId": "rrfNode-c3305e73-095c-45ba-8ad4-cc73b8967783",
 				"agamaData": {
-					"logMessage": "\"Token was : %\" data.token",
+					"logMessage": "\"Token was : %\" data.ut",
 					"logLevel": "info",
 					"nodeIcon": "octicon:log-16",
 					"nodeColor": "",
@@ -1330,8 +1330,8 @@
 		}
 	],
 	"viewport": {
-		"x": -2501,
-		"y": 109,
+		"x": -1828,
+		"y": -9,
 		"zoom": 1
 	}
 }
