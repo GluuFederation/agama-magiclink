@@ -52,7 +52,7 @@ public class Service extends MagicLinkService{
 
     public String generateMagicLink(String token) throws Exception {
 
-        return "https://"+ HOST + "/jans-auth/fl/callback?ut=" +token;
+        return "https://"+ HOST + "/jans-auth/fl/callback?ut=" +PREFIX+token;
     }
 
     public boolean verifyMagicLink(String token) {
