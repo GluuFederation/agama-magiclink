@@ -58,6 +58,7 @@ public class Service extends MagicLinkService{
     public boolean verifyMagicLink(String token) {
         try {
             token = token.replace(PREFIX, "");
+            LogUtils.log("Token after rmoving extra perfex %", token);
             SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
