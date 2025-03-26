@@ -18,9 +18,9 @@ Repeat 3 times max
           // User found
           Log "@info User found with e-mail % " email
           // Call magic link service to send mail
-          ut = Call magicLinkService sendMail email
+          token = Call magicLinkService sendMail email
           //  Magic link has been sent
-          Log "@debug Mail has been sent with token %" ut
+          Log "@debug Mail has been sent with token %" token
           // Empty object assign
           obj = {}
           // Fetching magic-link data
@@ -39,8 +39,8 @@ Repeat 3 times max
                // Token verification failed 
                Log "@info Token verification failed"
                // Token verification failed
-               it_utoug = {success:false, error: "Token verification failed"}
-               Finish it_utoug
+               it_ybobt = {success:false, error: "Token verification failed"}
+               Finish it_ybobt
      Otherwise
           // User not found
           Log "@info User not found with mail %" email
@@ -49,5 +49,5 @@ Repeat 3 times max
 // Max attempts Reached
 Log "@info Max attempts reached"
 // Flow finish with an error
-it_pzhoh = {success:false, error: "Max attempts reached"}
-Finish it_pzhoh
+it_uhmck = {success:false, error: "Max attempts reached"}
+Finish it_uhmck
