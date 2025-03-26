@@ -56,18 +56,14 @@ public class Service extends MagicLinkService{
     }
 
     public boolean verifyMagicLink(String token) {
-        try {
-            token = token.replace(PREFIX, "");
-            LogUtils.log("UT after removing prefix : %", token);
-            SignedJWT signedJWT = SignedJWT.parse(token);
-            JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+        token = token.replace(PREFIX, "");
+        LogUtils.log("UT after removing prefix : %", token);
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
-            if (signedJWT.verify(verifier)) {
-                Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-                return expirationTime != null && expirationTime.after(new Date());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (signedJWT.verify(verifier)) {
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            return expirationTime != null && expirationTime.after(new Date());
         }
         return false;
     }    
