@@ -39,8 +39,8 @@ Repeat 3 times max
                // Token verification failed 
                Log "@info Token verification failed"
                // Token verification failed
-               it_ybobt = {success:false, error: "Token verification failed"}
-               Finish it_ybobt
+               it_gkchj = {success:false, error: "Token verification failed"}
+               Finish it_gkchj
      Otherwise
           // User not found
           Log "@info User not found with mail %" email
@@ -49,5 +49,5 @@ Repeat 3 times max
 // Max attempts Reached
 Log "@info Max attempts reached"
 // Flow finish with an error
-it_uhmck = {success:false, error: "Max attempts reached"}
-Finish it_uhmck
+it_oqfjk = {success:false, error: "Max attempts reached"}
+Finish it_oqfjk
