@@ -8,8 +8,7 @@ import io.jans.orm.exception.operation.EntryNotFoundException;
 import io.jans.service.MailService;
 import io.jans.service.cdi.util.CdiUtil;
 import io.jans.util.StringHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.jans.agama.engine.script.LogUtils;
 import java.io.IOException;
 import io.jans.as.common.service.common.ConfigurationService;
 import java.security.SecureRandom;
@@ -25,19 +24,16 @@ import org.gluu.agama.jans.MagicLinkService;
 import org.gluu.agama.jans.model.ContextData;
 
 public class Service extends MagicLinkService{
-
-    private static final Logger logger = LoggerFactory.getLogger(MagicLinkService.class);
-
     private String HOST;
     private String SECRET_KEY;
     private Integer TOKEN_EXPIRATION;
+    private static final String PREFIX = "GJxc7c"; //Add extra string with token for security concern.
     private static final String MAIL = "mail";
     private static final String UID = "uid";
     private static final String DISPLAY_NAME = "displayName";
     private static final String GIVEN_NAME = "givenName";
     private static final String INUM_ATTR = "inum";
     private static final SecureRandom RAND = new SecureRandom();
-    // private static final String SECRET_KEY = "vfFYsdCNEreUsHKyl38b1wbIlf7PSxRm431ypSh6T3U=";
     private static final String SUBJECT_TEMPLATE = "MagicLink for authentication";
     private static final String MSG_TEMPLATE_TEXT = "%s is the magiclink to complete your verification";
 
@@ -56,20 +52,18 @@ public class Service extends MagicLinkService{
 
     public String generateMagicLink(String token) throws Exception {
 
-        return "https://"+ HOST + "/jans-auth/fl/callback?token=" + token;
+        return "https://"+ HOST + "/jans-auth/fl/callback?ut="+token;
     }
 
     public boolean verifyMagicLink(String token) {
-        try {
-            SignedJWT signedJWT = SignedJWT.parse(token);
-            JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
-            if (signedJWT.verify(verifier)) {
-                Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-                return expirationTime != null && expirationTime.after(new Date());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+
+        if (signedJWT.verify(verifier)) {
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            return expirationTime != null && expirationTime.after(new Date());
         }
         return false;
     }    
@@ -95,7 +89,7 @@ public class Service extends MagicLinkService{
     public Map<String, String> getUserEntity(String email) {
         User user = getUser(MAIL, email);
         boolean local = user != null;
-        logger.debug("There is {} local account for {}", local ? "a" : "no", email);
+        LogUtils.log("There is % local account for %", local ? "a" : "no", email);
     
         if (local) {
 
@@ -126,24 +120,32 @@ public class Service extends MagicLinkService{
     public String sendMail(String to) throws Exception {
         SmtpConfiguration smtpConfiguration = getSmtpConfiguration();
 
-        String token = generateToken(to);
-        String magicLink = generateMagicLink(token);
+        boolean smtp = smtpConfiguration!=null;
 
-        String from = smtpConfiguration.getFromEmailAddress();
-        String subject = String.format(SUBJECT_TEMPLATE);
-        String textBody = String.format(MSG_TEMPLATE_TEXT, magicLink);
-        String htmlBody = EmailTemplate.get(magicLink);
-
-        MailService mailService = CdiUtil.bean(MailService.class);
-
-        if (mailService.sendMailSigned(from, from, to, null, subject, textBody, htmlBody)) {
-            logger.debug("E-mail has been delivered to {} with code {}", to, token);
-            return token;
-        }else{
-            throw new EntryNotFoundException("Email sending failed. Please re-try");
+        if(smtp){
+            String token = generateToken(to);
+            String magicLink = generateMagicLink(token);
+    
+            String from = smtpConfiguration.getFromEmailAddress();
+            String subject = String.format(SUBJECT_TEMPLATE);
+            String textBody = String.format(MSG_TEMPLATE_TEXT, magicLink);
+            String htmlBody = EmailTemplate.get(magicLink);
+    
+            MailService mailService = CdiUtil.bean(MailService.class);
+    
+            if (mailService.sendMailSigned(from, from, to, null, subject, textBody, htmlBody)) {
+                LogUtils.log("E-mail has been delivered to % with code %", to, token);
+                return token;
+            }else{
+                throw new EntryNotFoundException("Email sending failed. Please re-try");
+            }
+            LogUtils.log("E-mail delivery failed, check jans-auth logs");
+            return null; 
         }
-        logger.debug("E-mail delivery failed, check jans-auth logs");
-        return null;      
+
+        LogUtils.log("Configuration missing");
+
+     
     }
 
     private SmtpConfiguration getSmtpConfiguration() {
