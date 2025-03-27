@@ -57,7 +57,6 @@ public class Service extends MagicLinkService{
 
     public boolean verifyMagicLink(String token) {
 
-        token = token.substring(PREFIX.length()).trim();
 
         SignedJWT signedJWT = SignedJWT.parse(token);
         JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
