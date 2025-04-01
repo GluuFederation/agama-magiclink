@@ -3,7 +3,7 @@
     "description": "Agama Project to authenticate a person by generating a Magic Link",
     "type": "community",
     "author": "GluuFederation",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "authorWebsite": "https://github.com/GluuFederation/agama-magiclink",
     "githubUri": "https://github.com/GluuFederation/agama-magiclink",
     "license": "apache-2.0",
