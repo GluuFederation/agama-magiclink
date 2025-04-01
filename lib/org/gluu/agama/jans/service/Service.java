@@ -52,11 +52,13 @@ public class Service extends MagicLinkService{
 
     public String generateMagicLink(String token) throws Exception {
 
-        return "https://"+ HOST + "/jans-auth/fl/callback?ut="+token;
+        return "https://"+ HOST + "/jans-auth/fl/callback?ut=" +PREFIX+token;
     }
 
     public boolean verifyMagicLink(String token) {
-
+        LogUtils.log("Before Token  %, PREFIX  %", token, PREFIX);
+        token = token.substring(PREFIX.length()).trim();
+        LogUtils.log("UT after removing prefix  %", token);
 
         SignedJWT signedJWT = SignedJWT.parse(token);
         JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
