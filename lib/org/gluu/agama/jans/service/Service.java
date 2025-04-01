@@ -21,7 +21,6 @@ import com.nimbusds.jwt.*;
 
 import org.gluu.agama.jans.EmailTemplate;
 import org.gluu.agama.jans.MagicLinkService;
-import org.gluu.agama.jans.model.ContextData;
 
 public class Service extends MagicLinkService{
     private String HOST;
