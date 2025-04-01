@@ -10,7 +10,7 @@
 
 # Agama Magiclink Project
 
-Magic Link authentication allows users to log in securely without a password. This implementation is designed for Gluu Server and Jans Server, providing a seamless authentication experience using a one-time link sent via email.
+Magic Link authentication allows users to log in securely without a password. This implementation is designed for Flex Server and Jans Server, providing a seamless authentication experience using a one-time link sent via email.
 
 ## Where To Deploy
 
@@ -135,10 +135,10 @@ sequenceDiagram
 title Agama-magiclink Authentication Flow
 
 actor User
-participant "Client App" as Client
-participant "Auth Server" as Server
-participant "Email Service" as Email
-participant "User's Email" as Mailbox
+participant Client
+participant Server
+participant Email
+participant Mailbox
 
 User -> Client: Request Login
 Client -> Server: Generate Magic Link
