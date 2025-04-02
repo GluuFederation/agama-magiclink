@@ -39,10 +39,20 @@ public class Service extends MagicLinkService{
     private static Service INSTANCE = null;
     private Service(){}
 
-    public static synchronized Service getInstance(String hostName, String secretKey, Integer tokenExpiration) {
-        if(hostName || secretKey || tokenExpiration){
-            LogUtils.log("Please ensure project configuration parameters not null or empty hostName % secretKey % tokenExpiration %", hostName, secretKey, tokenExpiration);
-        }
+    // public static synchronized Service getInstance(String hostName, String secretKey, Integer tokenExpiration) {
+    //     if(hostName || secretKey || tokenExpiration){
+    //         LogUtils.log("Please ensure project configuration parameters not null or empty hostName % secretKey % tokenExpiration %", hostName, secretKey, tokenExpiration);
+    //     }
+    //     if (INSTANCE == null) {
+    //         INSTANCE = new Service();
+    //         INSTANCE.HOST = hostName;
+    //         INSTANCE.SECRET_KEY = secretKey;
+    //         INSTANCE.TOKEN_EXPIRATION = tokenExpiration;
+    //     }
+    //     return INSTANCE;
+    // }
+
+    public Service(String hostName, String secretKey, Integer tokenExpiration) {
         if (INSTANCE == null) {
             INSTANCE = new Service();
             INSTANCE.HOST = hostName;
@@ -51,6 +61,11 @@ public class Service extends MagicLinkService{
         }
         return INSTANCE;
     }
+
+    public static Service getInstance(String hostName, String secretKey, Integer tokenExpiration) {
+        LogUtils.log("Please ensure project configuration parameters not null or empty hostName : %, secretKey : %, tokenExpiration : %", hostName, secretKey, tokenExpiration);
+        return new Service(hostName, secretKey, tokenExpiration);
+    }   
 
     public String generateMagicLink(String token) throws Exception {
 
