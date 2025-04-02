@@ -41,7 +41,7 @@ public class Service extends MagicLinkService{
 
     public static synchronized Service getInstance(String hostName, String secretKey, Integer tokenExpiration) {
         if(hostName || secretKey || tokenExpiration){
-            LogUtils.log("Please ensure project configuration parameters not null or empty");
+            LogUtils.log("Please ensure project configuration parameters not null or empty hostName % secretKey % tokenExpiration %", hostName, secretKey, tokenExpiration);
         }
         if (INSTANCE == null) {
             INSTANCE = new Service();
@@ -152,7 +152,7 @@ public class Service extends MagicLinkService{
     private SmtpConfiguration getSmtpConfiguration() {
         ConfigurationService configurationService = CdiUtil.bean(ConfigurationService.class);
         SmtpConfiguration smtpConfiguration = configurationService.getConfiguration().getSmtpConfiguration();
-        LogUtils.log("Your smtp configuration %", smtpConfiguration);
+        LogUtils.log("Your smtp configuration is %", smtpConfiguration);
         return smtpConfiguration;
 
     }    
