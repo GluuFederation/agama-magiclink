@@ -2,7 +2,6 @@ package org.gluu.agama.jans;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import org.gluu.agama.jans.model.ContextData;
 
 class EmailTemplate {
     
