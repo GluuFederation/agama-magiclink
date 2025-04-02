@@ -1,25 +1,25 @@
 {
-    "projectName": "agama-magiclink",
-    "description": "Agama Project to authenticate a person by generating a Magic Link",
-    "type": "community",
-    "author": "GluuFederation",
-    "version": "1.0.0",
-    "authorWebsite": "https://github.com/GluuFederation/agama-magiclink",
-    "githubUri": "https://github.com/GluuFederation/agama-magiclink",
-    "license": "apache-2.0",
-    "lastUpdated": "1739810595582",
-    "tags": [
-        "jans",
-        "authentication",
-        "community"
-    ],
-    "noDirectLaunch": [],
-    "configs": {
-        "org.gluu.agama.magiclink": {
-            "hostName": "example.com",
-            "secretKey": "xxx...",
-            "tokenExpiration": 10
-        },
-    },
-    "name": "agama-magiclink"
+  "projectName": "agama-magiclink",
+  "description": "Agama Project to authenticate a person by generating a Magic Link",
+  "type": "community",
+  "author": "GluuFederation",
+  "version": "1.0.2",
+  "authorWebsite": "https://github.com/GluuFederation/agama-magiclink",
+  "githubUri": "https://github.com/GluuFederation/agama-magiclink",
+  "license": "apache-2.0",
+  "lastUpdated": "1739810595582",
+  "tags": [
+    "jans",
+    "authentication",
+    "community"
+  ],
+  "noDirectLaunch": [],
+  "configs": {
+    "org.gluu.agama.magiclink": {
+      "hostName": "example.com",
+      "secretKey": "xxx...",
+      "tokenExpiration": 10
+    }
+  },
+  "name": "agama-magiclink"
 }
