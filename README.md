@@ -79,6 +79,7 @@ configuration parameters for the [flows contained in it](#flows-in-the-project):
   }
 }
 ```
+[N.B] : This **Secret key** is used for signing JWTs. Currently we've generated it statically using a Linux command. We were considering generating it dynamically, but since the signing key must stay consistent for token validation, we would still need to store it somewhere rather than regenerate it on every startup.
 
 ### Create SECRET_KEY
 > [!TIP]
