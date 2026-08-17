@@ -42,7 +42,7 @@ public class Service extends MagicLinkService{
     public static synchronized Service getInstance(String hostName, String secretKey, Integer tokenExpiration) {
         if (INSTANCE == null) {
             INSTANCE = new Service();
-            INSTANCE.HOST = hostName;
+            // INSTANCE.HOST = hostName;
             INSTANCE.SECRET_KEY = secretKey;
             INSTANCE.TOKEN_EXPIRATION = tokenExpiration;
         }
@@ -50,8 +50,8 @@ public class Service extends MagicLinkService{
     }
 
     public String generateMagicLink(String token) throws Exception {
-
-        return "https://"+ HOST + "/jans-auth/fl/callback?ut=" +PREFIX+token;
+        serverBase = NetworkUtils.urlBeforeContextPath();
+        return "https://"+ serverBase + "/jans-auth/fl/callback?ut=" +PREFIX+token;
     }
 
     public boolean verifyMagicLink(String token) {
