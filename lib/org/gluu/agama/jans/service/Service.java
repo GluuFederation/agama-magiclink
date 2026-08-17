@@ -71,7 +71,8 @@ public class Service extends MagicLinkService{
 
     public String generateToken(String email){
         long expirationTime = System.currentTimeMillis() + (this.TOKEN_EXPIRATION * 60 * 1000);
-
+        LogUtils.log("SecretKey:  %",  SECRET_KEY);
+        LogUtils.log("SecretKey length:  %",  SECRET_KEY.getBytes().length);
         JWSSigner signer = new MACSigner(SECRET_KEY.getBytes());
         SignedJWT signedJWT = new SignedJWT(
                 new JWSHeader(JWSAlgorithm.HS256),
