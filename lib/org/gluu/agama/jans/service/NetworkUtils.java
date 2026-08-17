@@ -1,3 +1,5 @@
+package org.gluu.agama.jans.service;
+
 import io.jans.service.cdi.util.CdiUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
