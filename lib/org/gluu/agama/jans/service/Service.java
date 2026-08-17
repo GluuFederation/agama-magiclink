@@ -23,7 +23,7 @@ import org.gluu.agama.jans.EmailTemplate;
 import org.gluu.agama.jans.MagicLinkService;
 
 public class Service extends MagicLinkService{
-    private String HOST;
+    private String serverBase;
     private String SECRET_KEY;
     private Integer TOKEN_EXPIRATION;
     private static final String PREFIX = "GJxc7c"; //Add extra string with token for security concern.
