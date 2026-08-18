@@ -217,9 +217,11 @@ public class Service extends MagicLinkService{
         Object value = null;
         if (attribute.equals(this.UID)) {
             //user.getAttribute("uid", true, false) always returns null :(
-            value = user.getUserId();
+            // value = user.getUserId();
+            value = user.getUserName();
         } else {
-            value = user.getAttribute(attribute, true, false);
+            // value = user.getAttribute(attribute, true, false);
+            value = user.getAttribute("userName", true, false);
         }
         return value == null ? null : value.toString();
 
