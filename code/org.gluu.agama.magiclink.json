@@ -705,7 +705,7 @@
 				"previousNodeId": "whenNode-ad62ea70-563f-4e66-bbb0-a64b99448555",
 				"branching": "success",
 				"agamaData": {
-					"logMessage": "\"Token verification successful\"",
+					"logMessage": "\"Token verification successful for user : %\" userData.uid",
 					"logLevel": "info",
 					"nodeIcon": "octicon:log-16",
 					"nodeColor": "",
@@ -720,7 +720,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false
+			"selected": true
 		},
 		{
 			"id": "finishNode-644af79d-8f80-40d9-b12d-faec286c7c35",
@@ -754,7 +754,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-4eb64728-7163-4a12-b143-92be72e137f2",
@@ -1330,8 +1330,8 @@
 		}
 	],
 	"viewport": {
-		"x": -2630,
-		"y": -72,
+		"x": -2804,
+		"y": 29,
 		"zoom": 1
 	}
 }
