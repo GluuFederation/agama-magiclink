@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
 import com.nimbusds.jwt.*;
+import java.util.Base64;
 
 import org.gluu.agama.jans.EmailTemplate;
 import org.gluu.agama.jans.MagicLinkService;
@@ -73,30 +74,62 @@ public class Service extends MagicLinkService{
         LogUtils.log("Before Token %, PREFIX %", token, PREFIX);
 
         token = token.substring(PREFIX.length()).trim();
-        LogUtils.log("UT after removing prefix %", token);
+        LogUtils.log("Token after removing prefix %", token);
 
-        SignedJWT signedJWT = SignedJWT.parse(token);
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
 
-        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+            // SECRET_KEY is Base64 encoded, so decode it first.
+            byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
 
-        LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
-        LogUtils.log("SECRET_KEY byte length: %", keyBytes.length);
+            LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
+            LogUtils.log("Decoded secret key byte length: %", keyBytes.length);
 
-        JWSVerifier verifier = new MACVerifier(keyBytes);
+            JWSVerifier verifier = new MACVerifier(keyBytes);
 
-        if (signedJWT.verify(verifier)) {
-            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-            return expirationTime != null && expirationTime.after(new Date());
+            if (signedJWT.verify(verifier)) {
+                Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+                return expirationTime != null && expirationTime.after(new Date());
+            }
+
+            return false;
+
+        } catch (Exception e) {
+            LogUtils.log("Failed to verify magic link: %", e.getMessage());
+            return false;
         }
-
-        return false;
     }
 
-    public String generateToken(String email){
+    // public String generateToken(String email){
+    //     long expirationTime = System.currentTimeMillis() + (this.TOKEN_EXPIRATION * 60 * 1000);
+    //     LogUtils.log("SecretKey:  %",  SECRET_KEY);
+    //     LogUtils.log("SecretKey length:  %",  SECRET_KEY.getBytes().length);
+    //     JWSSigner signer = new MACSigner(SECRET_KEY.getBytes());
+    //     SignedJWT signedJWT = new SignedJWT(
+    //             new JWSHeader(JWSAlgorithm.HS256),
+    //             new JWTClaimsSet.Builder()
+    //                     .subject(email)
+    //                     .expirationTime(new Date(expirationTime))
+    //                     .issueTime(new Date())
+    //                     .build()
+    //     );
+    //     signedJWT.sign(signer);
+    //     String token = signedJWT.serialize();
+
+    //     return token;
+    // }
+
+    public String generateToken(String email) {
         long expirationTime = System.currentTimeMillis() + (this.TOKEN_EXPIRATION * 60 * 1000);
-        LogUtils.log("SecretKey:  %",  SECRET_KEY);
-        LogUtils.log("SecretKey length:  %",  SECRET_KEY.getBytes().length);
-        JWSSigner signer = new MACSigner(SECRET_KEY.getBytes());
+
+        byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
+
+        LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
+        LogUtils.log("Decoded secret key byte length: %", keyBytes.length);
+
+        JWSSigner signer = new MACSigner(keyBytes);
+
         SignedJWT signedJWT = new SignedJWT(
                 new JWSHeader(JWSAlgorithm.HS256),
                 new JWTClaimsSet.Builder()
@@ -105,11 +138,12 @@ public class Service extends MagicLinkService{
                         .issueTime(new Date())
                         .build()
         );
-        signedJWT.sign(signer);
-        String token = signedJWT.serialize();
 
-        return token;
+        signedJWT.sign(signer);
+
+        return signedJWT.serialize();
     }
+
 
     public Map<String, String> getUserEntity(String email) {
         User user = getUser(MAIL, email);
