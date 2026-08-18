@@ -40,10 +40,9 @@ public class Service extends MagicLinkService{
     private static Service INSTANCE = null;
     private Service(){}
 
-    public static synchronized Service getInstance(String hostName, String secretKey, Integer tokenExpiration) {
+    public static synchronized Service getInstance(String secretKey, Integer tokenExpiration) {
         if (INSTANCE == null) {
             INSTANCE = new Service();
-            // INSTANCE.HOST = hostName;
             INSTANCE.SECRET_KEY = secretKey;
             INSTANCE.TOKEN_EXPIRATION = tokenExpiration;
         }
@@ -54,22 +53,7 @@ public class Service extends MagicLinkService{
         serverBase = NetworkUtils.urlBeforeContextPath();
         return serverBase + "/jans-auth/fl/callback?ut=" +PREFIX+token;
     }
-
-    // public boolean verifyMagicLink(String token) {
-    //     LogUtils.log("Before Token  %, PREFIX  %", token, PREFIX);
-    //     token = token.substring(PREFIX.length()).trim();
-    //     LogUtils.log("UT after removing prefix  %", token);
-
-    //     SignedJWT signedJWT = SignedJWT.parse(token);
-    //     JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
-
-    //     if (signedJWT.verify(verifier)) {
-    //         Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-    //         return expirationTime != null && expirationTime.after(new Date());
-    //     }
-    //     return false;
-    // }    
-
+ 
     public boolean verifyMagicLink(String token) {
         LogUtils.log("Before Token %, PREFIX %", token, PREFIX);
 
@@ -82,8 +66,6 @@ public class Service extends MagicLinkService{
             // SECRET_KEY is Base64 encoded, so decode it first.
             byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
 
-            LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
-            LogUtils.log("Decoded secret key byte length: %", keyBytes.length);
 
             JWSVerifier verifier = new MACVerifier(keyBytes);
 
@@ -101,32 +83,13 @@ public class Service extends MagicLinkService{
         }
     }
 
-    // public String generateToken(String email){
-    //     long expirationTime = System.currentTimeMillis() + (this.TOKEN_EXPIRATION * 60 * 1000);
-    //     LogUtils.log("SecretKey:  %",  SECRET_KEY);
-    //     LogUtils.log("SecretKey length:  %",  SECRET_KEY.getBytes().length);
-    //     JWSSigner signer = new MACSigner(SECRET_KEY.getBytes());
-    //     SignedJWT signedJWT = new SignedJWT(
-    //             new JWSHeader(JWSAlgorithm.HS256),
-    //             new JWTClaimsSet.Builder()
-    //                     .subject(email)
-    //                     .expirationTime(new Date(expirationTime))
-    //                     .issueTime(new Date())
-    //                     .build()
-    //     );
-    //     signedJWT.sign(signer);
-    //     String token = signedJWT.serialize();
-
-    //     return token;
-    // }
-
     public String generateToken(String email) {
         long expirationTime = System.currentTimeMillis() + (this.TOKEN_EXPIRATION * 60 * 1000);
 
         byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
 
-        LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
-        LogUtils.log("Decoded secret key byte length: %", keyBytes.length);
+        // LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
+        // LogUtils.log("Decoded secret key byte length: %", keyBytes.length);
 
         JWSSigner signer = new MACSigner(keyBytes);
 
