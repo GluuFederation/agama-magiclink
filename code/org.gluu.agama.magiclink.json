@@ -19,7 +19,10 @@
 				"agamaData": {
 					"isTopLevelFlow": true,
 					"basepath": "",
-					"configParams": "{\n  \"hostName\": \"example.com\",\n  \"secretKey\": \"xxx...\",\n  \"tokenExpiration\": 10\n}",
+					"configParams": {
+						"secretKey": "xxx...",
+						"tokenExpiration": 10
+					},
 					"nodeIcon": "material-symbols:line-start-square",
 					"timeout": "360",
 					"inputs": "",
@@ -208,7 +211,6 @@
 					"exceptionVariableField": "",
 					"callType": "Call static method",
 					"arguments": [
-						"conf.hostName",
 						"conf.secretKey",
 						"conf.tokenExpiration"
 					],
@@ -226,7 +228,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false,
+			"selected": true,
 			"dragging": false
 		},
 		{
@@ -536,7 +538,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-e5e75c46-7c57-4068-b28f-7b330d8fcb94",
@@ -705,7 +707,7 @@
 				"previousNodeId": "whenNode-ad62ea70-563f-4e66-bbb0-a64b99448555",
 				"branching": "success",
 				"agamaData": {
-					"logMessage": "\"Token verification successful\"",
+					"logMessage": "\"Token verification successful for user : %\" userData.uid",
 					"logLevel": "info",
 					"nodeIcon": "octicon:log-16",
 					"nodeColor": "",
@@ -745,8 +747,8 @@
 					"hasComment": true,
 					"comment": "Flow finished successfully",
 					"flowfilename": "",
-					"returnVariable": "userData.uid",
-					"finishMode": "withVariable",
+					"returnVariable": "{ userId: userData.uid}",
+					"finishMode": "withSuccess",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
 			},
@@ -1330,8 +1332,8 @@
 		}
 	],
 	"viewport": {
-		"x": 0,
-		"y": 0,
+		"x": -282,
+		"y": 27,
 		"zoom": 1
 	}
 }
