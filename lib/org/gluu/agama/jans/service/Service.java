@@ -54,20 +54,43 @@ public class Service extends MagicLinkService{
         return "https://"+ serverBase + "/jans-auth/fl/callback?ut=" +PREFIX+token;
     }
 
+    // public boolean verifyMagicLink(String token) {
+    //     LogUtils.log("Before Token  %, PREFIX  %", token, PREFIX);
+    //     token = token.substring(PREFIX.length()).trim();
+    //     LogUtils.log("UT after removing prefix  %", token);
+
+    //     SignedJWT signedJWT = SignedJWT.parse(token);
+    //     JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+
+    //     if (signedJWT.verify(verifier)) {
+    //         Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+    //         return expirationTime != null && expirationTime.after(new Date());
+    //     }
+    //     return false;
+    // }    
+
     public boolean verifyMagicLink(String token) {
-        LogUtils.log("Before Token  %, PREFIX  %", token, PREFIX);
+        LogUtils.log("Before Token %, PREFIX %", token, PREFIX);
+
         token = token.substring(PREFIX.length()).trim();
-        LogUtils.log("UT after removing prefix  %", token);
+        LogUtils.log("UT after removing prefix %", token);
 
         SignedJWT signedJWT = SignedJWT.parse(token);
-        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
+
+        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+
+        LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
+        LogUtils.log("SECRET_KEY byte length: %", keyBytes.length);
+
+        JWSVerifier verifier = new MACVerifier(keyBytes);
 
         if (signedJWT.verify(verifier)) {
             Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             return expirationTime != null && expirationTime.after(new Date());
         }
+
         return false;
-    }    
+    }
 
     public String generateToken(String email){
         long expirationTime = System.currentTimeMillis() + (this.TOKEN_EXPIRATION * 60 * 1000);
