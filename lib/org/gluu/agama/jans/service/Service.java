@@ -18,12 +18,13 @@ import java.util.stream.IntStream;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
 import com.nimbusds.jwt.*;
+import java.util.Base64;
 
 import org.gluu.agama.jans.EmailTemplate;
 import org.gluu.agama.jans.MagicLinkService;
 
 public class Service extends MagicLinkService{
-    private String HOST;
+    private String serverBase;
     private String SECRET_KEY;
     private Integer TOKEN_EXPIRATION;
     private static final String PREFIX = "GJxc7c"; //Add extra string with token for security concern.
@@ -39,10 +40,9 @@ public class Service extends MagicLinkService{
     private static Service INSTANCE = null;
     private Service(){}
 
-    public static synchronized Service getInstance(String hostName, String secretKey, Integer tokenExpiration) {
+    public static synchronized Service getInstance(String secretKey, Integer tokenExpiration) {
         if (INSTANCE == null) {
             INSTANCE = new Service();
-            INSTANCE.HOST = hostName;
             INSTANCE.SECRET_KEY = secretKey;
             INSTANCE.TOKEN_EXPIRATION = tokenExpiration;
         }
@@ -50,29 +50,49 @@ public class Service extends MagicLinkService{
     }
 
     public String generateMagicLink(String token) throws Exception {
+        serverBase = NetworkUtils.urlBeforeContextPath();
+        return serverBase + "/jans-auth/fl/callback?ut=" +PREFIX+token;
+    }
+ 
+    public boolean verifyMagicLink(String token) {
+        LogUtils.log("Before Token %, PREFIX %", token, PREFIX);
 
-        return "https://"+ HOST + "/jans-auth/fl/callback?ut=" +PREFIX+token;
+        token = token.substring(PREFIX.length()).trim();
+        LogUtils.log("Token after removing prefix %", token);
+
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+
+            // SECRET_KEY is Base64 encoded, so decode it first.
+            byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
+
+
+            JWSVerifier verifier = new MACVerifier(keyBytes);
+
+            if (signedJWT.verify(verifier)) {
+                Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+                return expirationTime != null && expirationTime.after(new Date());
+            }
+
+            return false;
+
+        } catch (Exception e) {
+            LogUtils.log("Failed to verify magic link: %", e.getMessage());
+            return false;
+        }
     }
 
-    public boolean verifyMagicLink(String token) {
-        LogUtils.log("Before Token  %, PREFIX  %", token, PREFIX);
-        token = token.substring(PREFIX.length()).trim();
-        LogUtils.log("UT after removing prefix  %", token);
-
-        SignedJWT signedJWT = SignedJWT.parse(token);
-        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
-
-        if (signedJWT.verify(verifier)) {
-            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-            return expirationTime != null && expirationTime.after(new Date());
-        }
-        return false;
-    }    
-
-    public String generateToken(String email){
+    public String generateToken(String email) {
         long expirationTime = System.currentTimeMillis() + (this.TOKEN_EXPIRATION * 60 * 1000);
 
-        JWSSigner signer = new MACSigner(SECRET_KEY.getBytes());
+        byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
+
+        // LogUtils.log("SECRET_KEY length: %", SECRET_KEY.length());
+        // LogUtils.log("Decoded secret key byte length: %", keyBytes.length);
+
+        JWSSigner signer = new MACSigner(keyBytes);
+
         SignedJWT signedJWT = new SignedJWT(
                 new JWSHeader(JWSAlgorithm.HS256),
                 new JWTClaimsSet.Builder()
@@ -81,11 +101,12 @@ public class Service extends MagicLinkService{
                         .issueTime(new Date())
                         .build()
         );
-        signedJWT.sign(signer);
-        String token = signedJWT.serialize();
 
-        return token;
+        signedJWT.sign(signer);
+
+        return signedJWT.serialize();
     }
+
 
     public Map<String, String> getUserEntity(String email) {
         User user = getUser(MAIL, email);
@@ -143,15 +164,13 @@ public class Service extends MagicLinkService{
             LogUtils.log("E-mail delivery failed, check jans-auth logs");
             return null; 
         }
-
-        LogUtils.log("Configuration missing");
-
      
     }
 
     private SmtpConfiguration getSmtpConfiguration() {
         ConfigurationService configurationService = CdiUtil.bean(ConfigurationService.class);
         SmtpConfiguration smtpConfiguration = configurationService.getConfiguration().getSmtpConfiguration();
+        LogUtils.log("Your smtp configuration is %", smtpConfiguration);
         return smtpConfiguration;
 
     }    

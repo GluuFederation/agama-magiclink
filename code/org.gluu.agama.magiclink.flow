@@ -11,7 +11,7 @@ Repeat 3 times max
      // Assign user email input to a variable
      email = formDataInput.mail
      // Create an instance of MagicLinkService with configurable parameters.
-     magicLinkService = Call org.gluu.agama.jans.MagicLinkService#getInstance conf.hostName conf.secretKey conf.tokenExpiration
+     magicLinkService = Call org.gluu.agama.jans.MagicLinkService#getInstance conf.secretKey conf.tokenExpiration
      // Get user details using magic link service
      userData = Call magicLinkService getUserEntity email
      When userData.empty is not true
@@ -32,15 +32,16 @@ Repeat 3 times max
           // Is Token verified 
           When isVerify is true
                // Token verification success
-               Log "@info Token verification successful"
+               Log "@info Token verification successful for user : %" userData.uid
                // Flow finished successfully
-               Finish userData.uid
+               it_akecg = {success:true, data: { userId: userData.uid}}
+               Finish it_akecg
           Otherwise
                // Token verification failed 
                Log "@info Token verification failed"
                // Token verification failed
-               it_gkchj = {success:false, error: "Token verification failed"}
-               Finish it_gkchj
+               it_oshor = {success:false, error: "Token verification failed"}
+               Finish it_oshor
      Otherwise
           // User not found
           Log "@info User not found with mail %" email
@@ -49,5 +50,5 @@ Repeat 3 times max
 // Max attempts Reached
 Log "@info Max attempts reached"
 // Flow finish with an error
-it_oqfjk = {success:false, error: "Max attempts reached"}
-Finish it_oqfjk
+it_kxngv = {success:false, error: "Max attempts reached"}
+Finish it_kxngv
