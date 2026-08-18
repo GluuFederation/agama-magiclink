@@ -11,7 +11,7 @@ public abstract class MagicLinkService {
 
     public abstract boolean verifyMagicLink(String token);
 
-    public static MagicLinkService getInstance(String hostName, String secretKey, Integer tokenEpiration){
-        return Service.getInstance(hostName, secretKey, tokenEpiration);
+    public static MagicLinkService getInstance(String secretKey, Integer tokenEpiration){
+        return Service.getInstance(secretKey, tokenEpiration);
     }
 }
