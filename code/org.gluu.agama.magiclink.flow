@@ -32,16 +32,16 @@ Repeat 3 times max
           // Is Token verified 
           When isVerify is true
                // Token verification success
-               Log "@info Token verification successful"
+               Log "@info Token verification successful for user : %" userData.uid
                // Flow finished successfully
-               it_qimau = {success:true, data: { userId: userData.uid}}
-               Finish it_qimau
+               it_pmord = {success:true, data: { userId: userData.uid}}
+               Finish it_pmord
           Otherwise
                // Token verification failed 
                Log "@info Token verification failed"
                // Token verification failed
-               it_uysoe = {success:false, error: "Token verification failed"}
-               Finish it_uysoe
+               it_bylvd = {success:false, error: "Token verification failed"}
+               Finish it_bylvd
      Otherwise
           // User not found
           Log "@info User not found with mail %" email
@@ -50,5 +50,5 @@ Repeat 3 times max
 // Max attempts Reached
 Log "@info Max attempts reached"
 // Flow finish with an error
-it_janns = {success:false, error: "Max attempts reached"}
-Finish it_janns
+it_wpiev = {success:false, error: "Max attempts reached"}
+Finish it_wpiev
